@@ -9,7 +9,7 @@ import os
 import cv2
 import numpy as np
 
-def modify_images_in_folder(folder_path, batch_size=50):
+def modify_images_custom(folder_path, batch_size=50):
     # Verifica si la carpeta existe
     if not os.path.exists(folder_path):
         print(f"La carpeta {folder_path} no existe.")
@@ -35,11 +35,11 @@ def modify_images_in_folder(folder_path, batch_size=50):
                 continue
 
             # Aplicar las reglas de modificación:
-            # - Valores menores a 4 se hacen 0
-            # - Valores entre 5 y 10 se hacen 10
-            # - Los valores 255 permanecen igual
-            modified_img = np.where(gray_img <= 4, 0, gray_img)
-            modified_img = np.where((modified_img >= 5) & (modified_img <= 10), 10, modified_img)
+            # - Valores de 10 se hacen 255
+            # - Valores de 255 se hacen 0
+            # - Los valores de 0 se mantienen iguales
+            modified_img = np.where(gray_img == 255, 0, gray_img)
+            modified_img = np.where(modified_img == 10, 255, modified_img)
 
             # Guardar la imagen modificada sobrescribiendo la original
             cv2.imwrite(img_path, modified_img)
@@ -50,4 +50,4 @@ def modify_images_in_folder(folder_path, batch_size=50):
 folder_path = "GROUND_TH"
 
 # Llama a la función
-modify_images_in_folder(folder_path)
+modify_images_custom(folder_path)
