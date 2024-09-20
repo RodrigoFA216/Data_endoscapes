@@ -35,11 +35,9 @@ def modify_images_in_folder(folder_path, batch_size=50):
                 continue
 
             # Aplicar las reglas de modificación:
-            # - Valores menores a 4 se hacen 0
-            # - Valores entre 5 y 10 se hacen 10
-            # - Los valores 255 permanecen igual
-            modified_img = np.where(gray_img <= 4, 0, gray_img)
-            modified_img = np.where((modified_img >= 5) & (modified_img <= 10), 10, modified_img)
+            # - Valores <= 128 se hacen 0
+            # - Valores > 128 se hacen 255
+            modified_img = np.where(gray_img <= 128, 0, 255)
 
             # Guardar la imagen modificada sobrescribiendo la original
             cv2.imwrite(img_path, modified_img)
